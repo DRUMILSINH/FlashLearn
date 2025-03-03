@@ -22,10 +22,11 @@ class SignUpActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        binding.signupButton.setOnClickListener {
-            val email = binding.signupEmail.text.toString().trim()
-            val password = binding.signupPassword.text.toString().trim()
-            val confirmPassword = binding.signupConfirmPassword.text.toString().trim()
+            binding.btnSignUp.setOnClickListener {
+                val email = binding.etEmail.text.toString().trim()
+                val password = binding.etPassword.text.toString().trim()
+                val confirmPassword = binding.etConfirmPassword.text.toString().trim()
+
 
             if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()

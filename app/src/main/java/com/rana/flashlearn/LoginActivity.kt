@@ -80,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.tvSignUp.setOnClickListener {
-            // TODO: Navigate to SignUpActivity
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
     }
 
@@ -168,4 +168,3 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
-

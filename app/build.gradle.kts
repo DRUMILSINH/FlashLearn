@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")  // Firebase Plugin
+    id("com.google.gms.google-services")  
 }
 
 android {
@@ -44,9 +44,14 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // Firebase Authentication
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.11.0")
+
+    implementation("com.google.firebase:firebase-auth-ktx:21.0.1") // Reverted to a stable version
+    implementation("com.google.firebase:firebase-firestore-ktx:24.0.0") // Reverted to a stable version
+    implementation("com.google.android.gms:play-services-auth:20.0.0") // Updated version
+
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0") // Added coroutines dependency
+    implementation("androidx.security:security-crypto:1.1.0-alpha03") 
 
     // Jetpack Navigation (Optional)
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
