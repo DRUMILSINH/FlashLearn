@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yourpackage.databinding.FragmentOnboardingBinding
+import com.rana.flashlearn.databinding.FragmentOnboardingBinding
 
 class OnboardingFragment : Fragment() {
 
@@ -18,14 +18,13 @@ class OnboardingFragment : Fragment() {
         private const val ARG_IMAGE_RES = "image_res"
 
         fun newInstance(title: String, description: String, imageRes: Int): OnboardingFragment {
-            val fragment = OnboardingFragment()
-            val args = Bundle().apply {
-                putString(ARG_TITLE, title)
-                putString(ARG_DESCRIPTION, description)
-                putInt(ARG_IMAGE_RES, imageRes)
+            return OnboardingFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putString(ARG_DESCRIPTION, description)
+                    putInt(ARG_IMAGE_RES, imageRes)
+                }
             }
-            fragment.arguments = args
-            return fragment
         }
     }
 

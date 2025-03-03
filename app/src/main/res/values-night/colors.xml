@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="gray">#4F4D4D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="primary_dark">#D0BCFF</color>
+    <color name="onPrimary_dark">#381E72</color>
+    <color name="secondary_dark">#CCC2DC</color>
+    <color name="onSecondary_dark">#332D41</color>
+    <color name="background_dark">#1C1B1F</color>
+    <color name="onBackground_dark">#E6E1E5</color>
+    <color name="surface_dark">#1C1B1F</color>
+    <color name="onSurface_dark">#E6E1E5</color>
+    <color name="purple_500">#B810EE</color>
+</resources>

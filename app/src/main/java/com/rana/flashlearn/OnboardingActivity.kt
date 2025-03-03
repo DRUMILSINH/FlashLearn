@@ -1,13 +1,10 @@
 package com.rana.flashlearn
 
-
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.rana.flashlearn.ActivityOnboardingBinding
-import com.rana.flashlearn.ui.auth.LoginActivity
+import com.rana.flashlearn.databinding.ActivityOnboardingBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnboardingActivity : AppCompatActivity() {
@@ -25,13 +22,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun setupOnboardingScreens() {
-        val onboardingData = listOf(
-            OnboardingItem("Welcome to FlashLearn!", "Boost your learning with smart flashcards.", com.yourpackage.R.drawable.onboarding1),
-            OnboardingItem("Track Progress", "Monitor your performance with analytics.", com.yourpackage.R.drawable.onboarding2),
-            OnboardingItem("Stay Motivated", "Earn rewards and stay consistent!", com.yourpackage.R.drawable.onboarding3)
-        )
-
-        onboardingAdapter = OnboardingAdapter(this, onboardingData)
+        onboardingAdapter = OnboardingAdapter(this)
         binding.viewPager.adapter = onboardingAdapter
 
         // Connect TabLayout with ViewPager2 for page indicators

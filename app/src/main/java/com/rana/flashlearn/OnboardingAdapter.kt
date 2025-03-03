@@ -3,21 +3,18 @@ package com.rana.flashlearn
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class OnboardingAdapter(
-    fragment: Fragment,
-    private val onboardingData: List<OnboardingItem>
-) : FragmentStateAdapter(fragment) {
+class OnboardingAdapter(activity: OnboardingActivity) : FragmentStateAdapter(activity) {
+
+    private val onboardingData = listOf(
+        Triple("Welcome to FlashLearn!", "Boost your learning with smart flashcards.", R.drawable.onboarding1),
+        Triple("Track Progress", "Monitor your performance with analytics.", R.drawable.onboarding2),
+        Triple("Stay Motivated", "Earn rewards and stay consistent!", R.drawable.onboarding3)
+    )
 
     override fun getItemCount(): Int = onboardingData.size
 
     override fun createFragment(position: Int): Fragment {
-        val item = onboardingData[position]
-        return OnboardingFragment.newInstance(item.title, item.description, item.imageRes)
+        val (title, description, imageRes) = onboardingData[position]
+        return OnboardingFragment.newInstance(title, description, imageRes)
     }
 }
-
-data class OnboardingItem(
-    val title: String,
-    val description: String,
-    val imageRes: Int
-)

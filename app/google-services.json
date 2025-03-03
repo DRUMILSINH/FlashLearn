@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "254103966102",
+    "project_id": "flashlearn-cbada",
+    "storage_bucket": "flashlearn-cbada.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254103966102:android:c9a69cbd05843230bc4db7",
+        "android_client_info": {
+          "package_name": "com.rana.flashlearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254103966102-seef2aibhc1i4ipfi3d3digd1ed4bbcm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rana.flashlearn",
+            "certificate_hash": "3aa74088db01813ae983898c1c3169ff9a3c2f3d"
+          }
+        },
+        {
+          "client_id": "254103966102-975blmp7bthte5basjn714429uhj4cv6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3YxCPqsZg4cvsa12YZX1u9KWhphCu4PM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254103966102-975blmp7bthte5basjn714429uhj4cv6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

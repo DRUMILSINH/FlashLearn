@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="gray">#4D4D4D</color>
+
+    <!-- ✅ Primary Colors -->
+    <color name="primary">#6750A4</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primaryContainer">#EADDFF</color>
+    <color name="onPrimaryContainer">#21005D</color>
+
+    <!-- ✅ Secondary Colors -->
+    <color name="secondary">#625B71</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondaryContainer">#E8DEF8</color>
+    <color name="onSecondaryContainer">#1D192B</color>
+
+    <!-- ✅ Background Colors -->
+    <color name="background">#FFFBFE</color>
+    <color name="onBackground">#1C1B1F</color>
+
+    <!-- ✅ Surface Colors -->
+    <color name="surface">#FFFFFF</color>
+    <color name="onSurface">#1C1B1F</color>
+    <color name="surfaceVariant">#E7E0EC</color>
+    <color name="onSurfaceVariant">#49454F</color>
+
+    <!-- ✅ Dark Theme Colors -->
+    <color name="primary_dark">#D0BCFF</color>
+    <color name="onPrimary_dark">#381E72</color>
+    <color name="secondary_dark">#CCC2DC</color>
+    <color name="onSecondary_dark">#332D41</color>
+    <color name="background_dark">#1C1B1F</color>
+    <color name="onBackground_dark">#E6E1E5</color>
+    <color name="surface_dark">#1C1B1F</color>
+    <color name="onSurface_dark">#E6E1E5</color>
+    <color name="black">#000000</color>
+    <color name="gray">#4F4D4D</color>
+    <color name="purple_500">#B810EE</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="primary_light">#FFFFFF</color>
+    <color name="onPrimary_light">#000000</color>
+    <color name="secondary_light">#AAAAAA</color>
+    <color name="onSecondary_light">#000000</color>
+    <color name="background_light">#EEEEEE</color>
+
+    <color name="custom_text_color">#3498DB</color>
+    <color name="custom_button_color">#2ECC71</color>
+    <color name="custom_button_text_color">#FFFFFF</color>
+    <color name="custom_forgot_password_color">#E74C3C</color>
+    <color name="custom_signup_color">#F39C12</color>
 </resources>
