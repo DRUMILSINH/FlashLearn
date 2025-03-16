@@ -11,11 +11,14 @@ class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var onboardingAdapter: OnboardingAdapter
+    private lateinit var sharedPrefManager: SharedPrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPrefManager = SharedPrefManager.getInstance(this)
 
         setupOnboardingScreens()
         setupButtonListeners()
@@ -25,7 +28,6 @@ class OnboardingActivity : AppCompatActivity() {
         onboardingAdapter = OnboardingAdapter(this)
         binding.viewPager.adapter = onboardingAdapter
 
-        // Connect TabLayout with ViewPager2 for page indicators
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
     }
 
@@ -45,6 +47,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun navigateToLogin() {
+        sharedPrefManager.setFirstLaunch(false) // Save onboarding state
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }

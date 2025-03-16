@@ -2,10 +2,10 @@ package com.rana.flashlearn
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
 
 class SplashActivity : AppCompatActivity() {
 
@@ -13,21 +13,22 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash) // Minimal UI for branding
+        setContentView(R.layout.activity_splash)
 
         sharedPrefManager = SharedPrefManager.getInstance(this)
 
-        // Delay for smooth transition (2 seconds)
-        Handler(Looper.getMainLooper()).postDelayed({
+        lifecycleScope.launch {
+            delay(2000)
+
             val nextActivity = when {
                 isFirstLaunch() -> OnboardingActivity::class.java
                 isUserLoggedIn() -> MainActivity::class.java
                 else -> LoginActivity::class.java
             }
 
-            startActivity(Intent(this, nextActivity))
+            startActivity(Intent(this@SplashActivity, nextActivity))
             finish()
-        }, 2000) // 2-second delay
+        }
     }
 
     private fun isFirstLaunch(): Boolean {
@@ -42,5 +43,3 @@ class SplashActivity : AppCompatActivity() {
         return sharedPrefManager.isLoggedIn() && FirebaseAuth.getInstance().currentUser != null
     }
 }
-
-

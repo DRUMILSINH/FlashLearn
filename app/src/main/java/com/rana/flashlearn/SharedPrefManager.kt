@@ -1,19 +1,18 @@
 package com.rana.flashlearn
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys
 
 class SharedPrefManager private constructor(context: Context) {
 
-    private val masterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
+    private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
-    private val preferences = EncryptedSharedPreferences.create(
-        context,
+    private val preferences: SharedPreferences = EncryptedSharedPreferences.create(
         PREF_NAME,
-        masterKey,
+        masterKeyAlias,
+        context,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
