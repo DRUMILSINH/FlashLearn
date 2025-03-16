@@ -1,4 +1,4 @@
-package com.rana.flashlearn
+package com.rana.flashlearn.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import com.google.firebase.firestore.FirebaseFirestore
-import com.rana.flashlearn.databinding.FragmentCategoriesBinding
-import kotlinx.coroutines.*
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
+import com.rana.flashlearn.Category
+import com.rana.flashlearn.CategoryAdapter
+import com.rana.flashlearn.databinding.FragmentCategoriesBinding
+import kotlinx.coroutines.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine

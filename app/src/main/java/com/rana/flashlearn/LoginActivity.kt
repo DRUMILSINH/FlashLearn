@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.rana.flashlearn.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
 import android.util.Log
+import com.rana.flashlearn.ui.MainActivity
+import com.rana.flashlearn.ui.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
 

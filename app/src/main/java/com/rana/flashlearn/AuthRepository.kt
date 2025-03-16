@@ -6,7 +6,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 
+import android.util.Log
+
 class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
+
 
     suspend fun signInWithEmailPassword(email: String, password: String): Result<String> {
         return try {

@@ -1,4 +1,4 @@
-package com.rana.flashlearn
+package com.rana.flashlearn.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import androidx.lifecycle.lifecycleScope
+import com.rana.flashlearn.LoginActivity
+import com.rana.flashlearn.R
+import com.rana.flashlearn.SharedPrefManager
 
 class SplashActivity : AppCompatActivity() {
 
@@ -17,8 +20,8 @@ class SplashActivity : AppCompatActivity() {
 
         sharedPrefManager = SharedPrefManager.getInstance(this)
 
-        lifecycleScope.launch {
-            delay(2000)
+        lifecycleScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.IO) { delay(2000) }
 
             val nextActivity = when {
                 isFirstLaunch() -> OnboardingActivity::class.java
@@ -27,16 +30,18 @@ class SplashActivity : AppCompatActivity() {
             }
 
             startActivity(Intent(this@SplashActivity, nextActivity))
-            finish()
+            finish() // Prevent going back to SplashActivity
         }
     }
 
-    private fun isFirstLaunch(): Boolean {
-        val isFirst = sharedPrefManager.isFirstLaunch()
-        if (isFirst) {
-            sharedPrefManager.setFirstLaunch(false)
+    private suspend fun isFirstLaunch(): Boolean {
+        return withContext(Dispatchers.IO) {
+            val isFirst = sharedPrefManager.isFirstLaunch()
+            if (isFirst) {
+                sharedPrefManager.setFirstLaunch(false)
+            }
+            isFirst
         }
-        return isFirst
     }
 
     private fun isUserLoggedIn(): Boolean {

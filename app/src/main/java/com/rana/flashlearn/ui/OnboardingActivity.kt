@@ -1,11 +1,14 @@
-package com.rana.flashlearn
+package com.rana.flashlearn.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.rana.flashlearn.databinding.ActivityOnboardingBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rana.flashlearn.LoginActivity
+import com.rana.flashlearn.OnboardingAdapter
+import com.rana.flashlearn.SharedPrefManager
+import com.rana.flashlearn.databinding.ActivityOnboardingBinding
 
 class OnboardingActivity : AppCompatActivity() {
 

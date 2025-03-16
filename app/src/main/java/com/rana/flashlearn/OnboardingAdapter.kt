@@ -2,6 +2,7 @@ package com.rana.flashlearn
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.rana.flashlearn.ui.OnboardingActivity
 
 class OnboardingAdapter(activity: OnboardingActivity) : FragmentStateAdapter(activity) {
 

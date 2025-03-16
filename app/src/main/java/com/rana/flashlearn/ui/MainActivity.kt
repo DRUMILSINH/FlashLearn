@@ -1,9 +1,13 @@
-package com.rana.flashlearn
+package com.rana.flashlearn.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.rana.flashlearn.AuthRepository
+import com.rana.flashlearn.LoginActivity
+import com.rana.flashlearn.R
+import com.rana.flashlearn.SharedPrefManager
 import com.rana.flashlearn.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,9 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sharedPrefManager = SharedPrefManager.getInstance(this)
-        authRepository = AuthRepository() // Ensure AuthRepository is correctly initialized.
+        authRepository = AuthRepository() // Ensure correct initialization
 
-        // Check user login state
+        // Check if the user is logged in
         if (!authRepository.isUserLoggedIn()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -30,35 +34,27 @@ class MainActivity : AppCompatActivity() {
         // Set up toolbar
         setSupportActionBar(binding.toolbar)
 
-        // Load default fragment
+        // Load default fragment (only if there’s no saved state)
         if (savedInstanceState == null) {
             loadFragment(HomeFragment())
         }
 
-        // Set up bottom navigation
+        // Set up bottom navigation listener
         binding.bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_home -> {
-                    loadFragment(HomeFragment())
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_categories -> {
-                    loadFragment(CategoriesFragment())
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_profile -> {
-                    loadFragment(ProfileFragment())
-                    return@setOnItemSelectedListener true
-                }
-                else -> false
+            val fragment = when (item.itemId) {
+                R.id.navigation_home -> HomeFragment()
+                R.id.navigation_categories -> CategoriesFragment()
+                R.id.navigation_profile -> ProfileFragment()
+                else -> null
             }
+            fragment?.let { loadFragment(it) } != null
         }
     }
 
     private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
+        supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null) // Allows back navigation
             .commit()
     }
 }

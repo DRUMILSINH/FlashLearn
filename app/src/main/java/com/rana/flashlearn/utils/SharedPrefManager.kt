@@ -36,31 +36,38 @@ class SharedPrefManager private constructor(context: Context) {
         }
     }
 
+    private inline fun editPreferences(commit: Boolean = false, action: SharedPreferences.Editor.() -> Unit) {
+        preferences.edit().apply {
+            action()
+            if (commit) commit() else apply()
+        }
+    }
+
     fun setLoggedIn(isLoggedIn: Boolean) {
-        preferences.edit().putBoolean(KEY_IS_LOGGED_IN, isLoggedIn).apply()
+        editPreferences { putBoolean(KEY_IS_LOGGED_IN, isLoggedIn) }
     }
 
     fun isLoggedIn(): Boolean = preferences.getBoolean(KEY_IS_LOGGED_IN, false)
 
     fun saveUserEmail(email: String) {
-        preferences.edit().putString(KEY_USER_EMAIL, email).apply()
+        editPreferences { putString(KEY_USER_EMAIL, email) }
     }
 
     fun getUserEmail(): String? = preferences.getString(KEY_USER_EMAIL, null)
 
     fun saveUserId(userId: String) {
-        preferences.edit().putString(KEY_USER_ID, userId).apply()
+        editPreferences { putString(KEY_USER_ID, userId) }
     }
 
     fun getUserId(): String? = preferences.getString(KEY_USER_ID, null)
 
     fun clearSession() {
-        preferences.edit().clear().apply()
+        editPreferences(commit = true) { clear() } // Immediate persistence
     }
 
     fun isFirstLaunch(): Boolean = preferences.getBoolean(KEY_IS_FIRST_LAUNCH, true)
 
     fun setFirstLaunch(isFirst: Boolean) {
-        preferences.edit().putBoolean(KEY_IS_FIRST_LAUNCH, isFirst).apply()
+        editPreferences { putBoolean(KEY_IS_FIRST_LAUNCH, isFirst) } // Async write is fine
     }
 }
