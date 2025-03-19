@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ProfileFragment"
+    tools:context=".ui.ProfileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- Profile Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewProfile"
         android:layout_width="match_parent"
@@ -50,6 +50,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Stats Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewStats"
         android:layout_width="match_parent"
@@ -88,15 +89,37 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Sync Status -->
+    <TextView
+        android:id="@+id/textViewLastSync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Last Sync: Never"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardViewStats"
+        app:layout_constraintBottom_toTopOf="@id/buttonSyncNow"/>
+
+    <!-- Sync Now Button -->
+    <Button
+        android:id="@+id/buttonSyncNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Sync Now"
+        android:textColor="@color/onPrimaryContainer"
+        app:backgroundTint="@color/custom_button_color"
+        app:layout_constraintTop_toBottomOf="@id/textViewLastSync"/>
+
+    <!-- Logout Button -->
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Logout"
         android:textColor="@color/custom_button_text_color"
-        app:layout_constraintTop_toBottomOf="@id/cardViewStats"
-        app:backgroundTint="@color/custom_forgot_password_color"/>
-
+        app:backgroundTint="@color/custom_forgot_password_color"
+        app:layout_constraintTop_toBottomOf="@id/buttonSyncNow"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
-

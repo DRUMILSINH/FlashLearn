@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.rana.flashlearn.Category
 import com.rana.flashlearn.CategoryAdapter
+import com.rana.flashlearn.data.AppDatabase
+import com.rana.flashlearn.data.CategoryEntity
 import com.rana.flashlearn.databinding.FragmentCategoriesBinding
-import kotlinx.coroutines.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
+import com.rana.flashlearn.ui.dialogs.AddCategoryDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class CategoriesFragment : Fragment() {
 
@@ -24,7 +25,7 @@ class CategoriesFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var firestore: FirebaseFirestore
-    private var oldCategories: List<Category> = emptyList()
+    private val categoryDao by lazy { AppDatabase.getDatabase(requireContext()).categoryDao() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +39,15 @@ class CategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firestore = FirebaseFirestore.getInstance()
+        categoryAdapter = CategoryAdapter(mutableListOf()) // ✅ Pass empty mutable list
+
         binding.recyclerViewCategories.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerViewCategories.adapter = categoryAdapter
+
+        binding.fabAddCategory.setOnClickListener {
+            AddCategoryDialog(categoryDao).show(parentFragmentManager, "AddCategoryDialog")
+        }
+
         loadCategories()
     }
 
@@ -47,73 +56,53 @@ class CategoriesFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
             binding.recyclerViewCategories.visibility = View.GONE
             binding.tvError.visibility = View.GONE
-            binding.tvEmpty.visibility = View.GONE
+            binding.emptyStateContainer.visibility = View.GONE
 
             try {
-                val newCategories = withContext(Dispatchers.IO) { getCategoriesFromFirestore() }
-
-                if (newCategories.isNotEmpty()) {
-                    val diffResult = DiffUtil.calculateDiff(CategoryDiffCallback(oldCategories, newCategories))
-                    categoryAdapter = CategoryAdapter(newCategories)
-                    binding.recyclerViewCategories.adapter = categoryAdapter
-                    diffResult.dispatchUpdatesTo(categoryAdapter)
-                    binding.recyclerViewCategories.visibility = View.VISIBLE
-                    oldCategories = newCategories
+                val roomCategories = withContext(Dispatchers.IO) { categoryDao.getAllCategories() }
+                if (roomCategories.isNotEmpty()) {
+                    updateRecyclerView(roomCategories)
                 } else {
-                    binding.tvEmpty.visibility = View.VISIBLE
+                    val firestoreCategories = getCategoriesFromFirestore()
+                    withContext(Dispatchers.IO) {
+                        categoryDao.insertCategories(firestoreCategories)
+                    }
+                    updateRecyclerView(firestoreCategories)
                 }
+
             } catch (e: Exception) {
                 binding.tvError.visibility = View.VISIBLE
                 binding.tvError.text = "Failed to load categories: ${e.message}"
-                Log.e("CategoriesFragment", "Firestore error: ${e.message}", e)
+                Log.e("CategoriesFragment", "Error: ${e.message}", e)
             } finally {
                 binding.progressBar.visibility = View.GONE
             }
         }
     }
 
-    private suspend fun getCategoriesFromFirestore(): List<Category> {
-        return suspendCoroutine<List<Category>> { continuation ->
-            firestore.collection("categories")
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    val categories = mutableListOf<Category>()
-                    for (document in querySnapshot.documents) {
-                        try {
-                            val category = Category(
-                                document.id,
-                                document.getString("categoryName") ?: "",
-                                document.getLong("numberOfFlashcards")?.toInt() ?: 0
-                            )
-                            categories.add(category)
-                        } catch (e: Exception) {
-                            Log.e("CategoriesFragment", "Document parsing error: ${e.message}", e)
-                        }
-                    }
-                    continuation.resume(categories)
-                }
-                .addOnFailureListener { e ->
-                    Log.e("CategoriesFragment", "Firestore get error: ${e.message}", e)
-                    continuation.resumeWithException(e)
-                }
-        }
+    private fun updateRecyclerView(categories: List<CategoryEntity>) {
+        categoryAdapter.updateData(categories) // ✅ Use correct function
+        binding.recyclerViewCategories.visibility = View.VISIBLE
+        binding.emptyStateContainer.visibility = if (categories.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    class CategoryDiffCallback(
-        private val oldList: List<Category>,
-        private val newList: List<Category>
-    ) : DiffUtil.Callback() {
+    private suspend fun getCategoriesFromFirestore(): List<CategoryEntity> {
+        val categories = mutableListOf<CategoryEntity>()
+        val snapshot = firestore.collection("categories").get().await()
 
-        override fun getOldListSize(): Int = oldList.size
-        override fun getNewListSize(): Int = newList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        for (document in snapshot.documents) {
+            try {
+                val category = CategoryEntity(
+                    id = document.id,
+                    categoryName = document.getString("categoryName") ?: "",
+                    numberOfFlashcards = document.getLong("numberOfFlashcards")?.toInt() ?: 0
+                )
+                categories.add(category)
+            } catch (e: Exception) {
+                Log.e("CategoriesFragment", "Firestore document error: ${e.message}", e)
+            }
         }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
-        }
+        return categories
     }
 
     override fun onDestroyView() {

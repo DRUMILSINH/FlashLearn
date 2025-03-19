@@ -4,11 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(private val authRepository: AuthRepository = AuthRepository()) : ViewModel() {
@@ -22,22 +17,13 @@ class SignUpViewModel(private val authRepository: AuthRepository = AuthRepositor
         _signUpResult.value = SignUpState.Loading
 
         viewModelScope.launch {
-            authRepository.createUserWithEmailAndPassword(email, password)
+            authRepository.createUserWithEmailAndPassword(email, password, username)
                 .fold(
                     onSuccess = {
-                        val user = authRepository.getCurrentUser()
-                        val profileUpdates = userProfileChangeRequest { displayName = username }
-
-                        user?.updateProfile(profileUpdates)?.addOnCompleteListener { profileTask ->
-                            if (profileTask.isSuccessful) {
-                                _signUpResult.value = SignUpState.Success("User registered successfully")
-                            } else {
-                                _signUpResult.value = SignUpState.Error("Profile update failed")
-                            }
-                        }
+                        _signUpResult.value = SignUpState.Success("User registered successfully")
                     },
                     onFailure = { exception ->
-                        _signUpResult.value = SignUpState.Error(handleAuthError(exception))
+                        _signUpResult.value = SignUpState.Error(exception.message ?: "Sign-up failed")
                     }
                 )
         }
@@ -45,7 +31,7 @@ class SignUpViewModel(private val authRepository: AuthRepository = AuthRepositor
 
     private fun validateInputs(email: String, password: String, confirmPassword: String, username: String): Boolean {
         return when {
-            email.isEmpty() || !ValidationUtils.isValidEmail(email) -> {
+            email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                 _signUpResult.value = SignUpState.Error("Invalid email")
                 false
             }
@@ -53,8 +39,8 @@ class SignUpViewModel(private val authRepository: AuthRepository = AuthRepositor
                 _signUpResult.value = SignUpState.Error("Username must be at least 3 characters")
                 false
             }
-            password.isEmpty() || password.length < 6 || !ValidationUtils.isStrongPassword(password) -> {
-                _signUpResult.value = SignUpState.Error("Weak password")
+            password.length < 6 -> {
+                _signUpResult.value = SignUpState.Error("Password must be at least 6 characters")
                 false
             }
             password != confirmPassword -> {
@@ -64,20 +50,4 @@ class SignUpViewModel(private val authRepository: AuthRepository = AuthRepositor
             else -> true
         }
     }
-
-    private fun handleAuthError(exception: Throwable): String {
-        return when (exception) {
-            is FirebaseAuthUserCollisionException -> "This email is already in use"
-            is FirebaseAuthWeakPasswordException -> (exception as FirebaseAuthWeakPasswordException).reason ?: "Weak password"
-            is FirebaseAuthInvalidCredentialsException -> "Invalid email format"
-            is FirebaseAuthInvalidUserException -> "User does not exist"
-            else -> exception.message ?: "Sign-up failed"
-        }
-    }
-}
-
-sealed class SignUpState {
-    object Loading : SignUpState()
-    data class Success(val message: String) : SignUpState()
-    data class Error(val errorMessage: String) : SignUpState()
 }

@@ -3,23 +3,25 @@ package com.rana.flashlearn
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKey
 
 class SharedPrefManager private constructor(context: Context) {
 
-    private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+    private val masterKey: MasterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
 
     private val preferences: SharedPreferences = EncryptedSharedPreferences.create(
-        PREF_NAME,
-        masterKeyAlias,
         context,
+        PREF_NAME,
+        masterKey,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
     companion object {
         private const val PREF_NAME = "FlashLearnPrefs"
-        const val KEY_IS_LOGGED_IN = "isLoggedIn"
+        private const val KEY_IS_LOGGED_IN = "isLoggedIn"
         private const val KEY_USER_EMAIL = "userEmail"
         private const val KEY_USER_ID = "userId"
         private const val KEY_IS_FIRST_LAUNCH = "isFirstLaunch"
@@ -43,6 +45,7 @@ class SharedPrefManager private constructor(context: Context) {
         }
     }
 
+    // ✅ Fix: Improved session management (Persistent login)
     fun setLoggedIn(isLoggedIn: Boolean) {
         editPreferences { putBoolean(KEY_IS_LOGGED_IN, isLoggedIn) }
     }
@@ -61,13 +64,14 @@ class SharedPrefManager private constructor(context: Context) {
 
     fun getUserId(): String? = preferences.getString(KEY_USER_ID, null)
 
+    // ✅ Fix: Ensure session clearing is immediately committed
     fun clearSession() {
-        editPreferences(commit = true) { clear() } // Immediate persistence
+        editPreferences(commit = true) { clear() }
     }
 
     fun isFirstLaunch(): Boolean = preferences.getBoolean(KEY_IS_FIRST_LAUNCH, true)
 
     fun setFirstLaunch(isFirst: Boolean) {
-        editPreferences { putBoolean(KEY_IS_FIRST_LAUNCH, isFirst) } // Async write is fine
+        editPreferences { putBoolean(KEY_IS_FIRST_LAUNCH, isFirst) }
     }
 }

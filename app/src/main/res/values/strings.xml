@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">FlashLearn</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_logo">FlashLearn Logo</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -9,7 +7,7 @@
     <string name="login">Login</string>
     <string name="or">OR</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="no_account">Don\'t have an account?</string>
+    <string name="no_account">Don\'t have an account</string>
     <string name="sign_up">Sign Up</string>
     <string name="login_successful">Login successful</string>
     <string name="login_failed">Login failed: %1$s</string>
@@ -20,4 +18,10 @@
     <string name="already_have_account">Already Have Account</string>
     <string name="username">Username</string>
     <string name="cards">cards</string>
+    <string name="categories">Categories</string>
+    <string name="no_categories_found">No categories found</string>
+    <string name="no_categories_found_create_one_to_get_started">No categories found. Create one to get started!</string>
+    <string name="create_category">Create Category</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="error_loading_categories">Error loading categories</string>
 </resources>

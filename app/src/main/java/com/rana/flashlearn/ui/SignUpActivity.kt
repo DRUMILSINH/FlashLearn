@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.rana.flashlearn.SignUpState
 import com.rana.flashlearn.SignUpViewModel
@@ -21,15 +22,18 @@ class SignUpActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
 
+        binding.etEmail.addTextChangedListener { validateAndEnableButton() }
+        binding.etUsername.addTextChangedListener { validateAndEnableButton() }
+        binding.etPassword.addTextChangedListener { validateAndEnableButton() }
+        binding.etConfirmPassword.addTextChangedListener { validateAndEnableButton() }
+
         binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             val confirmPassword = binding.etConfirmPassword.text.toString().trim()
             val username = binding.etUsername.text.toString().trim()
 
-            if (validateInputs(email, password, confirmPassword, username)) {
-                viewModel.registerUser(email, password, confirmPassword, username)
-            }
+            viewModel.registerUser(email, password, confirmPassword, username)
         }
 
         viewModel.signUpResult.observe(this) { state ->
@@ -54,27 +58,13 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateInputs(email: String, password: String, confirmPassword: String, username: String): Boolean {
-        if (email.isEmpty()) {
-            binding.etEmail.error = "Email cannot be empty"
-            return false
-        }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Enter a valid email"
-            return false
-        }
-        if (username.isEmpty()) {
-            binding.etUsername.error = "Username cannot be empty"
-            return false
-        }
-        if (password.length < 6) {
-            binding.etPassword.error = "Password must be at least 6 characters"
-            return false
-        }
-        if (password != confirmPassword) {
-            binding.etConfirmPassword.error = "Passwords do not match"
-            return false
-        }
-        return true
+    private fun validateAndEnableButton() {
+        val isValid = binding.etEmail.text.toString().trim().isNotEmpty() &&
+                binding.etUsername.text.toString().trim().isNotEmpty() &&
+                binding.etPassword.text.toString().trim().isNotEmpty() &&
+                binding.etConfirmPassword.text.toString().trim().isNotEmpty() &&
+                binding.etPassword.text.toString().trim() == binding.etConfirmPassword.text.toString().trim()
+
+        binding.btnSignUp.isEnabled = isValid
     }
 }

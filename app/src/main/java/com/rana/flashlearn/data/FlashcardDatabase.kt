@@ -6,24 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [FlashcardEntity::class, CategoryEntity::class], version = 2, exportSchema = false)
-@TypeConverters(DateConverter::class)
-abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [FlashcardEntity::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
+abstract class FlashcardDatabase : RoomDatabase() {
 
     abstract fun flashcardDao(): FlashcardDao
-    abstract fun categoryDao(): CategoryDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: FlashcardDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): FlashcardDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
-                    "flashlearn_db"
-                ).fallbackToDestructiveMigration().build()
+                    FlashcardDatabase::class.java,
+                    "flashcard_database"
+                ).build()
                 INSTANCE = instance
                 instance
             }

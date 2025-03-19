@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.AddFlashcardActivity"
+    android:padding="16dp">
+
+    <!-- Question Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutQuestion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter question" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Answer Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutAnswer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/primary"
+        app:layout_constraintTop_toBottomOf="@id/layoutQuestion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter answer" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Category Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/primary"
+        app:layout_constraintTop_toBottomOf="@id/layoutAnswer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter category"
+            android:focusable="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Save Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveFlashcard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Save Flashcard"
+        app:cornerRadius="8dp"
+        android:backgroundTint="@color/primary"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/layoutCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

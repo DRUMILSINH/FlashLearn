@@ -1,30 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
-    tools:context=".CategoriesFragment">
+    tools:context=".ui.CategoriesFragment">
 
+    <!-- Header -->
     <TextView
         android:id="@+id/textViewCategoriesHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Categories"
+        android:text="@string/categories"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/error_loading_categories"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- RecyclerView for Categories -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fabAddCategory"
         app:layout_constraintTop_toBottomOf="@id/textViewCategoriesHeader" />
 
+    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -35,26 +54,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvError"
+    <!-- Empty State Layout -->
+    <LinearLayout
+        android:id="@+id/emptyStateContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Error loading categories"
+        android:orientation="vertical"
+        android:gravity="center"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvEmpty"
+        <ImageView
+            android:id="@+id/imgEmptyState"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_empty"
+            android:contentDescription="@string/no_categories_found"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_categories_found_create_one_to_get_started"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btnCreateCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_category"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <!-- Floating Action Button for Adding Categories -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No categories found"
-        android:visibility="gone"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/add_new_category"
+        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_margin="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
